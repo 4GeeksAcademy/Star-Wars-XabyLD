@@ -13,7 +13,7 @@ import { CharactersDetails } from "./views/CharactersDetails";
 import { Planets } from "./views/Planets";
 import Vehicles from "./views/Vehicles";
 import DescriptionCard from "./component/DescriptionCard";
-import CharacterIndividualInfo from "./views/CharacterInvididualInfo";
+import CharacterIndividualInfo from "./views/characterIndividualInfo";
 import PlanetsIndividualInfo from "./views/PlanetsIndividualInfo";
 import VehiclesIndividualInfo from "./views/VehiclesIndividualInfo";
 

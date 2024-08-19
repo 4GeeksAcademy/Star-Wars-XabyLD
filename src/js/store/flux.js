@@ -9,24 +9,66 @@ const getState = ({ getStore, getActions, setStore }) => {
     },
 
     actions: {
-      getCharacters: async () => {
-        const store = getStore();
+      getUniqueCharacter: async () => {
+        const actions = getActions();
+
         try {
-          const response = await fetch("https://www.swapi.tech/api/people", {
+          const response = await fetch(`https://www.swapi.tech/api/people/`, {
             method: "GET",
             headers: {
               accept: "application/json",
             },
           });
 
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+
           const data = await response.json();
-          console.log(data);
-          setStore({ characters: data.results });
-          console.log(store.characters);
+          const personajesDataPromises = data.results.map(async (personaje) => {
+            try {
+              return await actions.getCharacters(personaje.uid);
+            } catch (error) {
+              console.error(
+                `Error fetching character ${personaje.uid}:`,
+                error
+              );
+              return null; // Opcionalmente, puedes manejar el personaje de manera distinta si falla
+            }
+          });
+
+          const personajesData = await Promise.all(personajesDataPromises);
+          setStore({ characters: personajesData });
+          console.log(personajesData);
+        } catch (error) {
+          console.error("Error fetching characters list:", error);
+        }
+      },
+      getCharacters: async (id) => {
+        const store = getStore();
+        console.log(id);
+        try {
+          const response = await fetch(
+            `https://www.swapi.tech/api/people/${id}`,
+            {
+              method: "GET",
+              headers: {
+                accept: "application/json",
+              },
+            }
+          );
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+
+          const data = await response.json();
+          console.log(data.result);
+          return data.result;
         } catch (error) {
           console.log(error);
         }
       },
+
       getPlanets: async () => {
         const store = getStore();
         try {
@@ -66,9 +108,12 @@ const getState = ({ getStore, getActions, setStore }) => {
         const findCharacter = store.characters.find(
           (character) => character.uid === id
         );
+        const isDuplicate = store.favourites.some((fav) => fav.uid === id);
         console.log(findCharacter);
-        const favourites = [...store.favourites, findCharacter];
-        setStore({ favourites });
+        if (findCharacter && !isDuplicate) {
+          const favouritesCharacter = [...store.favourites, findCharacter];
+          setStore({ favourites: favouritesCharacter });
+        }
         console.log(store.favourites);
       },
       deleteFavourite: (id) => {
@@ -81,10 +126,17 @@ const getState = ({ getStore, getActions, setStore }) => {
       sendFavouritePlanet: (id) => {
         const store = getStore();
         const findPlanet = store.planets.find((planeta) => planeta.uid === id);
+        const isDuplicate = store.favourites.some((fav) => fav.uid === id);
         console.log(findPlanet);
-        const favouritePlanet = [...store.favourites, findPlanet];
-        setStore({ favourites: favouritePlanet });
-        console.log(store.favourites);
+        if (findPlanet && !isDuplicate) {
+          const favouritePlanet = [...store.favourites, findPlanet];
+          setStore({ favourites: favouritePlanet });
+          console.log("Planeta añadido :", findPlanet);
+        } else if (isDuplicate) {
+          console.log("Este elemento ya está en favoritos");
+        } else {
+          console.log("No se encuentra el elemento que quieres añadir");
+        }
       },
       deleteFavouritePlanet: (id) => {
         const store = getStore();
@@ -99,9 +151,13 @@ const getState = ({ getStore, getActions, setStore }) => {
           (vehiculo) => vehiculo.uid === id
         );
         console.log(findVehicle);
-        const favouriteVehicle = [...store.favourites, findVehicle];
-        setStore({ favourites: favouriteVehicle });
-        console.log(store.favourites);
+        const isDuplicate = store.favourites.some((fav) => fav.uid === id);
+        console.log(isDuplicate);
+        if (findVehicle && !isDuplicate) {
+          const favouriteVehicle = [...store.favourites, findVehicle];
+          setStore({ favourites: favouriteVehicle });
+          console.log(store.favourites);
+        }
       },
       deleteFavouriteVehicle: (id) => {
         const store = getStore();

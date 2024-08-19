@@ -22,31 +22,43 @@ export const Navbar = () => {
             List Favourites
           </button>
           <ul className="dropdown-menu dropdown-menu-end dropdown-menu-dark  ">
-            {store.favourites.map((favourite, index) => {
-              const element = favourite.url.includes("planets")
-                ? "planets"
-                : favourite.url.includes("vehicles")
-                ? "vehicles"
-                : "characters";
+            {store.favourites.length > 0 ? (
+              store.favourites.map((favourite, index) => {
+                let element = "characters";
 
-              return (
-                <li
-                  className="dropdown-item d-flex justify-content-between"
-                  key={index}
-                >
-                  <Link to={`/${element}/${favourite.uid}`}>
-                    <span>{favourite.name}</span>
-                  </Link>
-                  <button
-                    type="button"
-                    className="btn btn-danger btn-sm"
-                    onClick={() => actions.deleteFavourite(favourite.uid)}
+                if (favourite && favourite.url) {
+                  if (favourite.url.includes("planets")) {
+                    element = "planets";
+                  } else if (favourite.url.inclues("vehicles")) {
+                    element = "vehicles";
+                  }
+                }
+
+                return (
+                  <li
+                    className="dropdown-item d-flex justify-content-between"
+                    key={index}
                   >
-                    <i className="fa-solid fa-trash"></i>
-                  </button>
-                </li>
-              );
-            })}
+                    <Link to={`/${element}/${favourite.uid}`}>
+                      <span>{favourite.properties.name}</span>
+                    </Link>
+                    <button
+                      type="button"
+                      className="btn btn-danger btn-sm"
+                      onClick={() => actions.deleteFavourite(favourite.uid)}
+                    >
+                      <i className="fa-solid fa-trash"></i>
+                    </button>
+                  </li>
+                );
+              })
+            ) : (
+              <li>
+                <span className="dropdown-item text-muted">
+                  No hay favoritos
+                </span>
+              </li>
+            )}
           </ul>
         </div>
       </div>
