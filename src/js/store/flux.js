@@ -46,7 +46,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
       getCharacters: async (id) => {
         const store = getStore();
-        console.log(id);
+
         try {
           const response = await fetch(
             `https://www.swapi.tech/api/people/${id}`,
@@ -62,17 +62,18 @@ const getState = ({ getStore, getActions, setStore }) => {
           }
 
           const data = await response.json();
-          console.log(data.result);
+          /* console.log(data.result); */
           return data.result;
         } catch (error) {
           console.log(error);
         }
       },
 
-      getPlanets: async () => {
-        const store = getStore();
+      getUniquePlanet: async () => {
+        const actions = getActions();
+
         try {
-          const response = await fetch("https://www.swapi.tech/api/planets", {
+          const response = await fetch(`https://www.swapi.tech/api/planets/`, {
             method: "GET",
             headers: {
               accept: "application/json",
@@ -80,25 +81,87 @@ const getState = ({ getStore, getActions, setStore }) => {
           });
           const data = await response.json();
           console.log(data.results);
-          setStore({ planets: data.results });
+          const planetsDataPromises = data.results.map(async (planeta) => {
+            try {
+              return await actions.getPlanets(planeta.uid);
+            } catch (error) {
+              console.log(error);
+            }
+          });
+          const planetsData = await Promise.all(planetsDataPromises);
+          setStore({ planets: planetsData });
+          console.log(planetsData);
         } catch (error) {
           console.log(error);
         }
       },
-      getVehicles: async () => {
+      getPlanets: async (id) => {
         const store = getStore();
 
         try {
-          const response = await fetch("https://www.swapi.tech/api/vehicles", {
+          const response = await fetch(
+            `https://www.swapi.tech/api/planets/${id}`,
+            {
+              method: "GET",
+              headers: {
+                accept: "application/json",
+              },
+            }
+          );
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const data = await response.json();
+          console.log("Planeta individual:", data.result);
+          console.log(store.planets);
+          return data.result;
+        } catch (error) {
+          console.log(error);
+        }
+      },
+      getVehicles: async (id) => {
+        const store = getStore();
+
+        try {
+          const response = await fetch(
+            `https://www.swapi.tech/api/vehicles/${id}`,
+            {
+              method: "GET",
+              headers: {
+                accept: "application/json",
+              },
+            }
+          );
+          const data = await response.json();
+          console.log("Vehiculo Individual : ", data.result);
+
+          return data.result;
+        } catch (error) {
+          console.log(error);
+        }
+      },
+      getUniqueVehicle: async () => {
+        const store = getStore();
+        const actions = getActions();
+        try {
+          const response = await fetch("https://www.swapi.tech/api/vehicles/", {
             method: "GET",
             headers: {
               accept: "application/json",
             },
           });
           const data = await response.json();
-          console.log(data);
-          setStore({ vehicles: data.results });
-          console.log(store.vehicles);
+          console.log(data.result);
+          const vehiclesDataPromises = data.results.map(async (vehicle) => {
+            try {
+              return await actions.getVehicles(vehicle.uid);
+            } catch (error) {
+              console.log(error);
+            }
+          });
+          const vehiclesData = await Promise.all(vehiclesDataPromises);
+          setStore({ vehicles: vehiclesData });
+          console.log(vehiclesData);
         } catch (error) {
           console.log(error);
         }

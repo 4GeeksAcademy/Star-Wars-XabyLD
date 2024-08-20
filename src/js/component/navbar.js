@@ -21,24 +21,29 @@ export const Navbar = () => {
           >
             List Favourites
           </button>
-          <ul className="dropdown-menu dropdown-menu-end dropdown-menu-dark  ">
+          <ul className="dropdown-menu dropdown-menu-end dropdown-menu-dark">
             {store.favourites.length > 0 ? (
               store.favourites.map((favourite, index) => {
-                let element = "characters";
+                let element = "characters"; // Valor por defecto
+                console.log(JSON.stringify(favourite, null, 2));
 
-                if (favourite && favourite.url) {
-                  if (favourite.url.includes("planets")) {
-                    element = "planets";
-                  } else if (favourite.url.inclues("vehicles")) {
-                    element = "vehicles";
-                  }
+                // Cambiar a 'planets' o 'vehicles' según la URL
+                if (favourite.properties.url.includes("planets")) {
+                  element = "planets";
+                  console.log("Elemento dentro de planetas", element);
+                } else if (favourite.properties.url.includes("vehicles")) {
+                  element = "vehicles";
+                  console.log("Elemento dentro de vehiculos", element);
                 }
+                console.log("Elemento fuera de los if ", element);
 
                 return (
                   <li
                     className="dropdown-item d-flex justify-content-between"
                     key={index}
                   >
+                    {console.log(element)}
+                    {console.log(favourite.uid)}
                     <Link to={`/${element}/${favourite.uid}`}>
                       <span>{favourite.properties.name}</span>
                     </Link>

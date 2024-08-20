@@ -35,9 +35,6 @@ export const CharactersDetails = () => {
                   image={`https://starwars-visualguide.com/assets/img/characters/${character.uid}.jpg`}
                   name={character.properties.name}
                   id={character.uid}
-                  eye_color={character.properties.eye_color}
-                  mass={character.properties.mass}
-                  height={character.properties.height}
                   moreInformation={() => {
                     handleInformation(character.uid);
                   }}

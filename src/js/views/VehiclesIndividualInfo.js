@@ -30,7 +30,7 @@ const VehiclesIndividualInfo = () => {
             src={`https://starwars-visualguide.com/assets/img/vehicles/${findVehicle.uid}.jpg`}
             alt="image from vehicle"
           />
-          <h5 className="card-title mt-2">{findVehicle.name}</h5>
+          <h5 className="card-title mt-2">{findVehicle.properties.name}</h5>
           <p className="card-text">{findVehicle.uid}</p>
           <Link to={`/vehicles/${randomVehicles().uid}`}>
             <button type="button">Try with a random vehicle</button>

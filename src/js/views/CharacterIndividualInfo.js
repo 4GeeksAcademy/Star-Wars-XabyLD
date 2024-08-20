@@ -31,7 +31,7 @@ const CharacterIndividualInfo = () => {
   return (
     <div className="container-fluid">
       <div
-        className="card"
+        className="card d-flex justify-content-center"
         style={{
           width: "80rem",
           backgroundImage: `url(${FondoEstrellas})`,

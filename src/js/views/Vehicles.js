@@ -23,7 +23,7 @@ const Vehicles = () => {
                 <CartaSW
                   image={`https://starwars-visualguide.com/assets/img/vehicles/${vehicle.uid}.jpg`}
                   key={index}
-                  name={vehicle.name}
+                  name={vehicle.properties.name}
                   id={vehicle.uid}
                   moreInformation={() => moreInformation(vehicle.uid)}
                   agregarFavoritos={() =>
