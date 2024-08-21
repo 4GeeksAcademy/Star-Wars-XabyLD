@@ -4,7 +4,7 @@ import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 import FondoEstrellas from "../../img/FondoEstrellas.webp";
 
-const VehiclesIndividualInfo = () => {
+const vehiclesIndividualInfo = () => {
   const { id } = useParams();
   const { store, actions } = useContext(Context);
 
@@ -84,4 +84,4 @@ const VehiclesIndividualInfo = () => {
   );
 };
 
-export default VehiclesIndividualInfo;
+export default vehiclesIndividualInfo;

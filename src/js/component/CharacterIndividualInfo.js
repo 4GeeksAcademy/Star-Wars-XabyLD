@@ -2,10 +2,10 @@ import React, { useContext } from "react";
 import { useParams } from "react-router";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
-import DescriptionCard from "../component/DescriptionCard";
+import DescriptionCard from "./DescriptionCard";
 import FondoEstrellas from "../../img/FondoEstrellas.webp";
 
-const CharacterIndividualInfo = () => {
+const characterIndividualInfo = () => {
   const { id } = useParams();
   const { store } = useContext(Context);
 
@@ -65,7 +65,7 @@ const CharacterIndividualInfo = () => {
                 {store.vehicles.slice(0, 3).map((index) => (
                   <ul className="list-group">
                     <li className="list-group-item" key={index}>
-                      {randomVehicles().name}
+                      {randomVehicles().properties.name}
                     </li>
                   </ul>
                 ))}
@@ -112,4 +112,4 @@ const CharacterIndividualInfo = () => {
   );
 };
 
-export default CharacterIndividualInfo;
+export default characterIndividualInfo;

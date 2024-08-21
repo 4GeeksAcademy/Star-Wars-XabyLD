@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
-import DescriptionCard from "../component/DescriptionCard";
+import DescriptionCard from "./DescriptionCard";
 import { useParams } from "react-router";
 import { Context } from "../store/appContext";
 import image from "../../img/Tatooine_TPM.webp";
 import { Link } from "react-router-dom";
 import FondoEstrellas from "../../img/FondoEstrellas.webp";
 
-const PlanetsIndividualInfo = () => {
+const planetsIndividualInfo = () => {
   const params = useParams();
   const { store, actions } = useContext(Context);
 
@@ -144,4 +144,4 @@ const PlanetsIndividualInfo = () => {
   );
 };
 
-export default PlanetsIndividualInfo;
+export default planetsIndividualInfo;

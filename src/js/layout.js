@@ -12,10 +12,9 @@ import { Footer } from "./component/footer";
 import { CharactersDetails } from "./views/CharactersDetails";
 import { Planets } from "./views/Planets";
 import Vehicles from "./views/Vehicles";
-import DescriptionCard from "./component/DescriptionCard";
-import CharacterIndividualInfo from "./views/characterIndividualInfo";
-import PlanetsIndividualInfo from "./views/PlanetsIndividualInfo";
-import VehiclesIndividualInfo from "./views/VehiclesIndividualInfo";
+import CharacterIndividualInfo from "./component/CharacterIndividualInfo";
+import PlanetsIndividualInfo from "./component/planetsIndividualInfo";
+import VehiclesIndividualInfo from "./component/vehiclesIndividualInfo";
 
 //create your first component
 const Layout = () => {
